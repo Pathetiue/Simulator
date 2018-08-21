@@ -1,4 +1,3 @@
-
 #coding=utf-8
 import math
 import time
@@ -26,16 +25,16 @@ import struct
 import gym
 
 '''
-这里使用的坐标系为X正方向向�? Y正方向向�?
+这里使用的坐标系为X正方向向??? Y正方向向???
 '''
 
 # Linux下需要设置成False
 # 如果在Windows下刷新频率不正常, 设置此项为True
 ViewTitle = False
 
-# 单位使用: 秒，�?
+# 单位使用: 秒，???
 
-# 碰撞距离, CRASH_R是障碍机器人的半�?
+# 碰撞距离, CRASH_R是障碍机器人的半???
 CRASH_R = 0.16
 
 # 飞行器速度
@@ -44,16 +43,16 @@ PLANE_ALPHA = 1
 PLANE_BETA = 3
 
 PLANE_PERCEPTION = 2.0  # 预测范围
-PLANE_DGOAL = 1.0  # 防止引力过大的距�?
+PLANE_DGOAL = 1.0  # 防止引力过大的距???
 PLANE_N = 2
-PLANE_FREPFIX = 0.5  # 抑制斥力过大的参�?
+PLANE_FREPFIX = 0.5  # 抑制斥力过大的参???
 
 PLANE_TIME = 0  # 预测XX秒后障碍机器人的位置
 PLANE_AI = True  # 是否使用策略
 PLANE_REAL = False  # 使用M100
 MAX_UAV_HEIGHT = 3.0
 
-# 飞行器起始位�?
+# 飞行器起始位???
 START_X = -10.0
 START_Y = -6.0
 
@@ -79,11 +78,11 @@ UPDATE_HEIGHT_DELTA = 0.1
 # 策略
 LeftDangerValue = ROBOT_V * 5
 RightDangerValue = ROBOT_V * 5
-# 触碰所用时�?
+# 触碰所用时???
 AIRotate45Time = 4.0
-# 飞行器降落所用时�?
+# 飞行器降落所用时???
 AIRotate180Time = 10.0
-# 捕捉目标最长时�?
+# 捕捉目标最长时???
 CatchTime = 30.0;
 # 最好的下降位置
 GoodLandPosDis = 1
@@ -97,11 +96,11 @@ ADDR = (HOST, PORT)
 PORT2 = 7102
 ADDR2 = (HOST, PORT2)
 
-# 刷新速度倍数(与正常速度�?
+# 刷新速度倍数(与正常速度???
 UpdateRatio = 1.0
 UpdateSeconds = 0.02
 
-# 坐标线间�?20 / 行或列格�? , 必须为整�?
+# 坐标线间???20 / 行或列格??? , 必须为整???
 LineInterval = 20 // 10
 
 PI = np.pi
@@ -115,7 +114,7 @@ def isCrash(a, b):
     return d2 <= u * u and w > 0
 
 
-# 在附�?
+# 在附???
 def isNear(a, b, u):
     d2 = sum((a.pos - b.pos) ** 2)
     return d2 <= u * u
@@ -156,11 +155,11 @@ class MoveObject:
         raise Exception("Don't change x")
 
     def Crashed(self):
-        # 碰到地面机器人或障碍机器�?
+        # 碰到地面机器人或障碍机器???
         for r in self.Robots + self.Obstacles:
             if isCrash(self, r) and self.id != r.id:
                 return True
-                # 碰到飞行�?
+                # 碰到飞行???
         for p in self.Planes:
             if isCrash(self, p) and self.id != p.id and p.isLand():
                 return True
@@ -219,7 +218,7 @@ class Robot(MoveObject):
 
         if np.abs(self.x) > 10 or np.abs(self.y) > 10:
             self.stoped = True
-        # 出界�?
+        # 出界???
         if self.stoped:
             return
         '''
@@ -228,7 +227,7 @@ class Robot(MoveObject):
         '''
 
         # 运动规则
-        # �?80度时是不受碰撞影响的�?但受Touch影响
+        # ???80度时是不受碰撞影响的???但受Touch影响
         # 0 run | touch,reverse,noise,colli
         # 1 noise | touch, colli
         # 2 reverse | touch
@@ -363,7 +362,7 @@ class Plane(MoveObject):
     _LandV = 0.2
     alpha = PLANE_ALPHA
     beta = PLANE_BETA
-    perception = PLANE_PERCEPTION  # 感知障碍物范�?
+    perception = PLANE_PERCEPTION  # 感知障碍物范???
     ti = PLANE_TIME
 
     def __init__(self, x, y):
@@ -537,7 +536,7 @@ class SimWindow(QWidget):
             pen.setDashPattern([1, 4])
             qp.setPen(pen)
 
-            # 画网�?
+            # 画网???
             for r in range(-10, 10, LineInterval):
                 DrawLine(-10, r, 10, r)
                 DrawLine(r, -10, r, 10)
@@ -570,14 +569,14 @@ class SimWindow(QWidget):
         Fatt = 0
         Frep = 0
         for p in self.Planes:
-            # 绘制无人�?
+            # 绘制无人???
             pen = QPen(Qt.black, 6, Qt.SolidLine)
             qp.setPen(pen)
             DrawPoint(p.x, p.y)
             pen = QPen(Qt.black, 1, Qt.SolidLine)
             qp.setPen(pen)
 
-            # 注意yaw计算的方�?
+            # 注意yaw计算的方???
             # yawL = 0.6
             # DrawLine(p.x, p.y, p.x + np.cos(p.yaw) * yawL, p.y - np.sin(p.yaw) * yawL)
 
@@ -682,18 +681,18 @@ class IARCSimEnv(gym.Env):
         return self.get_state()
 
     def step(self, a):
-        dt = 0.1
+        dt = 0.01
         update_times = 1
         calcTime = self.useTime % 20
         target = 7#a / 2
-        action = 1#a % 2
+        action = 0#a % 2
         self.Planes[0].lockRobot = self.Robots[target]
         reward = 0 
-	old_AvgPos = []
-	for eachRobots in self.Robots:
+        old_AvgPos = []
+        for eachRobots in self.Robots:
             eachAvgPos = eachRobots.pos + eachRobots.v * 1.0 * (10.0 - calcTime)
-	    old_AvgPos.append(eachAvgPos)
-	    
+            old_AvgPos.append(eachAvgPos)
+            
         if action == 0: # TopTouch
             if isNear(self.Planes[0], self.Robots[target], CRASH_R):
                 # print("Plane Rotates45 Robot %d from angle %f" % (r.id, To360A(r.angle)))
@@ -712,7 +711,9 @@ class IARCSimEnv(gym.Env):
                     #reward = 10
                     update_times = int(math.ceil(Rotate180WaitTime / dt))
                     #print("Plane Rotates180 Robot %d from angle %f" % (r.id, To360A(r.angle)))
-	print(self.Robots[7].v ,"   ", self.useTime)
+        #if update_times > 1:
+        #    print("action",action,"  update time",update_times)
+        #    print("START 7", Robots[7].pos)
         for _ in range(update_times):
             for o in self.Obstacles:
                 pass#o.update(dt)
@@ -728,39 +729,39 @@ class IARCSimEnv(gym.Env):
                 reward = -3
             else:
                 reward = -1
-	print(self.Robots[7].v)
+
         self.useTime += dt * update_times
         newCalcTime = self.useTime % 20
-	next_AvgPos = []
-	for eachRobots in self.Robots:
-            eachAvgPos = eachRobots.pos + eachRobots.v * 1.0 * (10.0 - calcTime)
-	    next_AvgPos.append(eachAvgPos)    
-	next_AvgPosArray = np.array(next_AvgPos)
-	old_AvgPosArray = np.array(old_AvgPos)
+        next_AvgPos = []
+        for eachRobots in self.Robots:
+            eachAvgPos = eachRobots.pos + eachRobots.v * 1.0 * (10.0 - newCalcTime)
+            next_AvgPos.append(eachAvgPos)    
+        next_AvgPosArray = np.array(next_AvgPos)
+        old_AvgPosArray = np.array(old_AvgPos)
         allDeltaPos = next_AvgPosArray - old_AvgPosArray
-	allDeltaX = np.sum((allDeltaPos),axis=0)[0]
-	#print(allDeltaPos[7][0])
+        allDeltaX = np.sum((allDeltaPos),axis=0)[0]
+        print("delta Avg X",allDeltaPos[7][0])
 
         if abs(allDeltaX) > self.epsilon:
             reward += -  allDeltaX
-	reward += -  allDeltaPos[target][0]	
-	#print(- 100.0 * allDeltaPos[target][0])
-            # if self.Robots[target].x < -10 and target not in self.success_robot:
-            #     reward = 10000
-            #     self.success_robot.append(target)
-            #     print("success",target)
+        reward += -  allDeltaPos[target][0]    
+        #print(- 100.0 * allDeltaPos[target][0])
+                # if self.Robots[target].x < -10 and target not in self.success_robot:
+                #     reward = 10000
+                #     self.success_robot.append(target)
+                #     print("success",target)
 
-        #for temp_robot in self.Robots :
-        #    if temp_robot.x < -10 and temp_robot not in self.success_robot:
-        #        reward += 20
-        #        self.success_robot.append(temp_robot)
-        #        print("success")
-        #    elif temp_robot.x > 10 and temp_robot not in self.fail_robot:
-        #        reward += -1000
-        #        self.fail_robot.append(temp_robot)
-        #        print("fail")
+            #for temp_robot in self.Robots :
+            #    if temp_robot.x < -10 and temp_robot not in self.success_robot:
+            #        reward += 20
+            #        self.success_robot.append(temp_robot)
+            #        print("success")
+            #    elif temp_robot.x > 10 and temp_robot not in self.fail_robot:
+            #        reward += -1000
+            #        self.fail_robot.append(temp_robot)
+            #        print("fail")
 
-	if r in self.success_robot or r in self.fail_robot:
+        if r in self.success_robot or r in self.fail_robot:
             reward += -20
 
 
@@ -778,10 +779,10 @@ class IARCSimEnv(gym.Env):
             # [[p.x, p.y, p.z] for p in self.Planes]
             [[GetDis(r,self.Planes[0])] for r in self.Robots] +
             [[(r.x - (-10))] for r in self.Robots] +
-	    [[r.angle] for r in self.Robots] +
-	    #[[GetDis(r,self.Planes[0])] for r in self.Obstacles] +
-	    #[[r.angle] for r in self.Obstacles] +
-	    [[(self.useTime % 20)]]
+        [[r.angle] for r in self.Robots] +
+        #[[GetDis(r,self.Planes[0])] for r in self.Obstacles] +
+        #[[r.angle] for r in self.Obstacles] +
+        [[(self.useTime % 20)]]
         )
 
 
@@ -805,7 +806,7 @@ class StrategyThread(threading.Thread):
                 env.render()
                 a = self.ppo.choose_action(s)
                 s_, r, done, currentTime, _ = env.step(a)
-		buffer_s.append(s)
+                buffer_s.append(s)
                 buffer_a.append(a)
                 buffer_r.append(r)  # normalize reward, find it useful
                 s = s_

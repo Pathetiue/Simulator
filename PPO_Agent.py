@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 
 EP_MAX = 1000
-EP_LEN = 1800
+EP_LEN = 1800 * 5
 GAMMA = 0.9
 A_LR = 0.0001
 C_LR = 0.0002
